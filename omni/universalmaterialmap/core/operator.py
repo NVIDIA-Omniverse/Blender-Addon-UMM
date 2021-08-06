@@ -1782,3 +1782,190 @@ class ColorSpaceResolver(Operator):
     def _assert_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
         if not output_plugs[0].computed_value == output_plugs[0].enum_values[2]:
             raise Exception('Test failed.')
+
+
+class Add(Operator):
+
+    def __init__(self):
+        super(Add, self).__init__(
+            id='f2818669-5454-4599-8792-2cb09f055bf9',
+            name='Add',
+            required_inputs=0,
+            min_inputs=2,
+            max_inputs=-1,
+            num_outputs=1
+        )
+
+    def _compute_outputs(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        output = 0
+        for input_plug in input_plugs:
+            try:
+                output += input_plug.computed_value
+            except:
+                pass
+        output_plugs[0].computed_value = output
+
+    def generate_input(self, parent: DagNode, index: int) -> Plug:
+        plug = Plug.Create(
+            parent=parent,
+            name='[{0}]'.format(index),
+            display_name='[{0}]'.format(index),
+            value_type=Plug.VALUE_TYPE_FLOAT,
+            editable=True,
+            is_removable=True,
+        )
+        plug.default_value = 0.0
+        plug.computed_value = 0.0
+        return plug
+
+    def generate_output(self, parent: DagNode, index: int) -> Plug:
+        if index == 0:
+            return Plug.Create(parent=parent, name='sum', display_name='sum', value_type=Plug.VALUE_TYPE_FLOAT)
+        raise Exception('Output index "{0}" not supported.'.format(index))
+
+    def remove_plug(self, operator_instance: 'OperatorInstance', plug: 'Plug') -> None:
+        super(Add, self).remove_plug(operator_instance=operator_instance, plug=plug)
+        for index, plug in enumerate(operator_instance.inputs):
+            plug.name = '[{0}]'.format(index)
+            plug.display_name = '[{0}]'.format(index)
+        for plug in operator_instance.outputs:
+            plug.invalidate()
+
+    def _prepare_plugs_for_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        pass
+
+    def _assert_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        pass
+
+
+class Subtract(Operator):
+
+    def __init__(self):
+        super(Subtract, self).__init__(
+            id='15f523f3-4e94-43a5-8306-92d07cbfa48c',
+            name='Subtract',
+            required_inputs=0,
+            min_inputs=2,
+            max_inputs=-1,
+            num_outputs=1
+        )
+
+    def _compute_outputs(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        output = None
+        for input_plug in input_plugs:
+            try:
+                if output is None:
+                    output = input_plug.computed_value
+                else:
+                    output -= input_plug.computed_value
+            except:
+                pass
+        output_plugs[0].computed_value = output
+
+    def generate_input(self, parent: DagNode, index: int) -> Plug:
+        plug = Plug.Create(
+            parent=parent,
+            name='[{0}]'.format(index),
+            display_name='[{0}]'.format(index),
+            value_type=Plug.VALUE_TYPE_FLOAT,
+            editable=True,
+            is_removable=True,
+        )
+        plug.default_value = 0.0
+        plug.computed_value = 0.0
+        return plug
+
+    def generate_output(self, parent: DagNode, index: int) -> Plug:
+        if index == 0:
+            return Plug.Create(parent=parent, name='difference', display_name='difference', value_type=Plug.VALUE_TYPE_FLOAT)
+        raise Exception('Output index "{0}" not supported.'.format(index))
+
+    def remove_plug(self, operator_instance: 'OperatorInstance', plug: 'Plug') -> None:
+        super(Subtract, self).remove_plug(operator_instance=operator_instance, plug=plug)
+        for index, plug in enumerate(operator_instance.inputs):
+            plug.name = '[{0}]'.format(index)
+            plug.display_name = '[{0}]'.format(index)
+        for plug in operator_instance.outputs:
+            plug.invalidate()
+
+    def _prepare_plugs_for_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        pass
+
+    def _assert_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        pass
+
+
+class Remap(Operator):
+
+    def __init__(self):
+        super(Remap, self).__init__(
+            id='2405c02a-facc-47a6-80ef-d35d959b0cd4',
+            name='Range',
+            required_inputs=5,
+            min_inputs=5,
+            max_inputs=5,
+            num_outputs=1
+        )
+
+    def _compute_outputs(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        result = 0.0
+        try:
+            old_value = input_plugs[0].computed_value
+            old_min = input_plugs[1].computed_value
+            old_max = input_plugs[2].computed_value
+            new_min = input_plugs[3].computed_value
+            new_max = input_plugs[4].computed_value
+            result = ((old_value - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min
+
+        except:
+            pass
+
+        output_plugs[0].computed_value = result
+
+    def generate_input(self, parent: DagNode, index: int) -> Plug:
+        if index == 0:
+            plug = Plug.Create(parent=parent, name='value', display_name='Value', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug.default_value = 0
+            plug.computed_value = 0
+            return plug
+        if index == 1:
+            plug = Plug.Create(parent=parent, name='old_min', display_name='Old Min', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug.is_editable = True
+            plug.default_value = 0
+            plug.computed_value = 0
+            return plug
+        if index == 2:
+            plug = Plug.Create(parent=parent, name='old_max', display_name='Old Max', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug.is_editable = True
+            plug.default_value = 1
+            plug.computed_value = 1
+            return plug
+        if index == 3:
+            plug = Plug.Create(parent=parent, name='new_min', display_name='New Min', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug.is_editable = True
+            plug.default_value = 0
+            plug.computed_value = 0
+            return plug
+        if index == 4:
+            plug = Plug.Create(parent=parent, name='new_max', display_name='New Max', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug.is_editable = True
+            plug.default_value = 10
+            plug.computed_value = 10
+            return plug
+        raise Exception('Input index "{0}" not supported.'.format(index))
+
+    def generate_output(self, parent: DagNode, index: int) -> Plug:
+        if index == 0:
+            return Plug.Create(parent=parent, name='remapped_value', display_name='Remapped Value', value_type=Plug.VALUE_TYPE_FLOAT)
+        raise Exception('Output index "{0}" not supported.'.format(index))
+
+    def _prepare_plugs_for_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        input_plugs[0].computed_value = 0.5
+        input_plugs[1].computed_value = 0
+        input_plugs[2].computed_value = 1
+        input_plugs[3].computed_value = 1
+        input_plugs[4].computed_value = 0
+
+    def _assert_test(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
+        if not output_plugs[0].computed_value == 0.5:
+            raise Exception('Test failed.')

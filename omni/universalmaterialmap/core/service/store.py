@@ -662,6 +662,7 @@ class __Manager:
 
         self._operators: typing.List[data.Operator] = [
             operator.And(),
+            operator.Add(),
             operator.BooleanSwitch(),
             operator.ColorSpaceResolver(),
             operator.ConstantBoolean(),
@@ -683,9 +684,11 @@ class __Manager:
             operator.Multiply(),
             operator.Not(),
             operator.Or(),
+            operator.Remap(),
             operator.SplitRGB(),
             operator.SplitRGBA(),
             operator.SplitTextureData(),
+            operator.Subtract(),
             operator.ValueResolver(),
             operator.ValueTest(),
         ]
