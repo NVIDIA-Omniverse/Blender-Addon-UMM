@@ -5228,6 +5228,64 @@
                 "_description": "",
                 "_operator_module": "omni.universalmaterialmap.core.operator",
                 "_operator_class_name": "ValueResolver"
+            },
+            {
+                "_id": "c75506d3-cb3a-4333-8e4d-6a9cb90b1bd4",
+                "_inputs": [
+                    {
+                        "_id": "0f5c8425-b2a0-458e-8b3e-791c2f1d1bee",
+                        "_name": "[0]",
+                        "_display_name": "[0]",
+                        "_value_type": "float",
+                        "_internal_value_type": "any",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": 1.0,
+                        "_value": 1.0,
+                        "_enum_values": []
+                    },
+                    {
+                        "_id": "169895f7-8fbe-43a6-b9ba-521f1a7f490e",
+                        "_name": "[1]",
+                        "_display_name": "[1]",
+                        "_value_type": "float",
+                        "_internal_value_type": "any",
+                        "_is_peripheral": false,
+                        "_is_editable": true,
+                        "_is_removable": false,
+                        "_default_value": 1.0,
+                        "_value": 683.013427734375,
+                        "_enum_values": []
+                    }
+                ],
+                "_outputs": [
+                    {
+                        "_id": "461c8391-0a04-41de-99ab-cdda8b6b4608",
+                        "_name": "product",
+                        "_display_name": "product",
+                        "_value_type": "float",
+                        "_internal_value_type": "any",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": null,
+                        "_value": 683.013427734375,
+                        "_enum_values": []
+                    }
+                ],
+                "_display_name": "Multiply",
+                "_position": [
+                    909.9298095703125,
+                    736.170654296875
+                ],
+                "_expansion_state": 0,
+                "_show_inputs": true,
+                "_show_outputs": true,
+                "_show_peripheral": false,
+                "_description": "",
+                "_operator_module": "omni.universalmaterialmap.core.operator",
+                "_operator_class_name": "Multiply"
             }
         ],
         "_connections": [
@@ -5294,10 +5352,6 @@
             {
                 "_source_id": "fa409e52-534c-412d-9440-2317cb21a259",
                 "_destination_id": "5dae45b7-c01d-4e57-9993-ab5ce883405a"
-            },
-            {
-                "_source_id": "fd973be3-ad89-44f4-9b4a-cf2670b7cf68",
-                "_destination_id": "7c76f484-ad5e-4465-9a42-48e46983ae8b"
             },
             {
                 "_source_id": "ef4d5996-a80a-4f10-b2af-a817833d917f",
@@ -5698,9 +5752,17 @@
             {
                 "_source_id": "f63dc40a-a970-4603-b913-9d3b7e624dd9",
                 "_destination_id": "f9a5feba-2e31-4cf6-8c52-2180fd792082"
+            },
+            {
+                "_source_id": "fd973be3-ad89-44f4-9b4a-cf2670b7cf68",
+                "_destination_id": "0f5c8425-b2a0-458e-8b3e-791c2f1d1bee"
+            },
+            {
+                "_source_id": "461c8391-0a04-41de-99ab-cdda8b6b4608",
+                "_destination_id": "7c76f484-ad5e-4465-9a42-48e46983ae8b"
             }
         ],
         "_source_node_id": "f1792d72-5cd3-4b58-b8ef-57f70c0910a5",
-        "_revision": 29
+        "_revision": 30
     }
 }
