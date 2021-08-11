@@ -42,13 +42,13 @@ https://blender.stackexchange.com/questions/3393/add-custom-menu-at-specific-loc
 """
 
 bl_info = {
-    'name': 'Universal_Material_Map_Addon',
+    'name': 'Universal Material Map',
     'author': 'NVIDIA',
     'description': 'A Blender AddOn based on the Universal Material Map framework.',
-    'blender': (2, 91, 0),
+    'blender': (3, 0, 0),
     'location': 'View3D',
     'warning': '',
-    'category': 'Material'
+    'category': 'Omniverse'
 }
 
 import sys
@@ -57,6 +57,7 @@ import importlib
 import bpy
 
 from .universalmaterialmap.blender import developer_mode
+
 
 if developer_mode:
 
