@@ -43,7 +43,7 @@ https://blender.stackexchange.com/questions/3393/add-custom-menu-at-specific-loc
 
 bl_info = {
     'name': 'Universal Material Map',
-    'author': 'NVIDIA',
+    'author': 'NVIDIA Corporation',
     'description': 'A Blender AddOn based on the Universal Material Map framework.',
     'blender': (3, 0, 0),
     'location': 'View3D',
