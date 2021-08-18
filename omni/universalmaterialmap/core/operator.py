@@ -1900,7 +1900,7 @@ class Remap(Operator):
     def __init__(self):
         super(Remap, self).__init__(
             id='2405c02a-facc-47a6-80ef-d35d959b0cd4',
-            name='Range',
+            name='Remap',
             required_inputs=5,
             min_inputs=5,
             max_inputs=5,
@@ -1909,22 +1909,41 @@ class Remap(Operator):
 
     def _compute_outputs(self, input_plugs: typing.List[Plug], output_plugs: typing.List[Plug]):
         result = 0.0
-        try:
-            old_value = input_plugs[0].computed_value
-            old_min = input_plugs[1].computed_value
-            old_max = input_plugs[2].computed_value
-            new_min = input_plugs[3].computed_value
-            new_max = input_plugs[4].computed_value
-            result = ((old_value - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min
 
-        except:
-            pass
+        old_value = input_plugs[0].computed_value
+
+        try:
+            test = iter(old_value)
+            is_iterable = True
+        except TypeError:
+            is_iterable = False
+
+        if not is_iterable:
+            try:
+                old_min = input_plugs[1].computed_value
+                old_max = input_plugs[2].computed_value
+                new_min = input_plugs[3].computed_value
+                new_max = input_plugs[4].computed_value
+                result = ((old_value - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min
+            except:
+                pass
+        else:
+            result = []
+            for o in old_value:
+                try:
+                    old_min = input_plugs[1].computed_value
+                    old_max = input_plugs[2].computed_value
+                    new_min = input_plugs[3].computed_value
+                    new_max = input_plugs[4].computed_value
+                    result.append(((o - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min)
+                except:
+                    pass
 
         output_plugs[0].computed_value = result
 
     def generate_input(self, parent: DagNode, index: int) -> Plug:
         if index == 0:
-            plug = Plug.Create(parent=parent, name='value', display_name='Value', value_type=Plug.VALUE_TYPE_FLOAT)
+            plug = Plug.Create(parent=parent, name='value', display_name='Value', value_type=Plug.VALUE_TYPE_ANY)
             plug.default_value = 0
             plug.computed_value = 0
             return plug

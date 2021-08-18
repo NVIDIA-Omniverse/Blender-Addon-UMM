@@ -30,3 +30,5 @@ BROWSE_FOR_LIBRARY: bool = False
 
 POLLING: bool = False
 
+COPY: bool = False
+
