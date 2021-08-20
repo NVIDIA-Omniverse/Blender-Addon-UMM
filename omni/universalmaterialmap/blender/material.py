@@ -83,6 +83,8 @@ def apply_data_to_instance(instance_name: str,  source_class: str, render_contex
             if material.name == instance_name:
                 if util.can_apply_data_to_instance(source_class_name=source_class, render_context=render_context, source_data=source_data, instance=material):
                     util.apply_data_to_instance(source_class_name=source_class, render_context=render_context, source_data=source_data, instance=material)
+                else:
+                    print(f'Omniverse UMM: Unable to apply data at import for material "{instance_name}". This is not an error - just means that conversion data does not support the material.')
                 return
     except Exception as error:
         print('Warning: Universal Material Map: function "apply_data_to_instance": Unexpected error:')

@@ -73,7 +73,8 @@ def _get_conversion_graph_impl(source_class: str, render_context: str) -> typing
         if developer_mode:
             print('UMM DEBUG: blender.converter._get_conversion_graph_impl: found match "{0}")'.format(conversion_map.conversion_graph.filename))
         return conversion_map.conversion_graph
-    print('UMM DEBUG: blender.converter._get_conversion_graph_impl: found no match!)')
+    if developer_mode:
+        print('UMM DEBUG: blender.converter._get_conversion_graph_impl: found no match!)')
     return None
 
 
