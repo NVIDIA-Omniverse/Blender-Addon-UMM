@@ -113,9 +113,25 @@ class IObjectConverter(ICoreConverter):
         return False
 
     @abstractmethod
-    def apply_data_to_instance(self, source_class_name: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]], instance: object) -> None:
+    def apply_data_to_instance(self, source_class_name: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]], instance: object) -> dict:
         """
-        Returns a list of created objects.
+        Returns a notification object
+
+        Examples:
+            {
+                'umm_notification': "success",
+                'message': "Material \"Material_A\" was successfully converted from \"OmniPBR\" data."
+            }
+
+            {
+                'umm_notification': "incomplete_process",
+                'message': "Not able to convert \"Material_B\" using \"CustomMDL\" since there is no Conversion Graph supporting that scenario."
+            }
+
+            {
+                'umm_notification': "unexpected_error",
+                'message': "Not able to convert \"Material_C\" using \"OmniGlass\" due to an unexpected error. Details: \"cannot set property to None\"."
+            }
         """
         raise NotImplementedError()
 

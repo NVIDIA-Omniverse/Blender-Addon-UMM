@@ -26,66 +26,19 @@ import bpy
 from ..core.converter import util
 
 
-"""
-import omni.universalmaterialmap.blender.material
-
-omni.universalmaterialmap.blender.material.apply_data_to_instance(
-instance_name='Material',
-source_class='OmniPBR.mdl|OmniPBR',
-render_context='Blender',
-source_data=[
-            ('albedo_add', 0.02),
-            ('albedo_desaturation', 0.19999999),
-            ('ao_texture', ('', 'raw')),
-            ('ao_to_diffuse', 1),
-            ('bump_factor', 10),
-            ('diffuse_color_constant', (0.800000011920929, 0.800000011920929, 0.800000011920929)),
-            ('diffuse_texture', ('D:/Blender_GTC_2021/Marbles/assets/standalone/A_bumper/textures/play_bumper/blue/play_bumperw_albedo.png', 'sRGB')),
-            ('diffuse_tint', (0.96202534, 0.8118357, 0.8118357)),
-            ('enable_emission', 0),
-            ('enable_ORM_texture', 1),
-            ('metallic_constant', 1),
-            ('metallic_texture', ('', 'raw')),
-            ('metallic_texture_influence', 1),
-            ('normalmap_texture', ('D:/Blender_GTC_2021/Marbles/assets/standalone/A_bumper/textures/play_bumper/blue/play_bumperw_normal.png', 'raw')),
-            ('ORM_texture', ('D:/Blender_GTC_2021/Marbles/assets/standalone/A_bumper/textures/play_bumper/blue/play_bumperw_orm.png', 'raw')),
-            ('reflection_roughness_constant', 1),
-            ('reflection_roughness_texture_influence', 1),
-            ('reflectionroughness_texture', ('', 'raw')),
-            ('texture_rotate', 45),
-            ('texture_scale', (2, 2)),
-            ('texture_translate', (0.1, 0.9)),
-        ]
-)
-"""
-"""
-import omni.universalmaterialmap.blender.material
-
-omni.universalmaterialmap.blender.material.convert_instance_to_data(
-instance_name='Material',
-render_context='MDL',
-)
-
-import omni.universalmaterialmap.blender.material
-
-omni.universalmaterialmap.blender.material.convert_instance_to_data(
-instance_name='M_play_bumper_wood',
-render_context='MDL',
-)
-"""
-
-
-def apply_data_to_instance(instance_name: str,  source_class: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]]) -> None:
+def apply_data_to_instance(instance_name: str,  source_class: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]]) -> dict:
     try:
         for material in bpy.data.materials:
             if not isinstance(material, bpy.types.Material):
                 continue
             if material.name == instance_name:
                 if util.can_apply_data_to_instance(source_class_name=source_class, render_context=render_context, source_data=source_data, instance=material):
-                    util.apply_data_to_instance(source_class_name=source_class, render_context=render_context, source_data=source_data, instance=material)
-                else:
-                    print(f'Omniverse UMM: Unable to apply data at import for material "{instance_name}". This is not an error - just means that conversion data does not support the material.')
-                return
+                    return util.apply_data_to_instance(source_class_name=source_class, render_context=render_context, source_data=source_data, instance=material)
+                print(f'Omniverse UMM: Unable to apply data at import for material "{instance_name}". This is not an error - just means that conversion data does not support the material.')
+                result = dict()
+                result['umm_notification'] = 'incomplete_process'
+                result['message'] = 'Not able to convert type "{0}" for render context "{1}" because there is no Conversion Graph for that scenario. No changes were applied to "{2}".'.format(source_class, render_context, instance_name)
+                return result
     except Exception as error:
         print('Warning: Universal Material Map: function "apply_data_to_instance": Unexpected error:')
         print('\targument "instance_name" = "{0}"'.format(instance_name))
@@ -94,6 +47,10 @@ def apply_data_to_instance(instance_name: str,  source_class: str, render_contex
         print('\targument "source_data" = "{0}"'.format(source_data))
         print('\terror: {0}'.format(error))
         print('\tcallstack: {0}'.format(traceback.format_exc()))
+        result = dict()
+        result['umm_notification'] = 'unexpected_error'
+        result['message'] = 'Not able to convert type "{0}" for render context "{1}" because there was an unexpected error. Some changes may have been applied to "{2}". Details: {3}'.format(source_class, render_context, instance_name, error)
+        return result
 
 
 def convert_instance_to_data(instance_name: str,  render_context: str) -> typing.List[typing.Tuple[str, typing.Any]]:
@@ -104,11 +61,22 @@ def convert_instance_to_data(instance_name: str,  render_context: str) -> typing
             if material.name == instance_name:
                 if util.can_convert_instance_to_data(instance=material, render_context=render_context):
                     return util.convert_instance_to_data(instance=material, render_context=render_context)
-                return []
+                result = dict()
+                result['umm_notification'] = 'incomplete_process'
+                result['message'] = 'Not able to convert material "{0}" for render context "{1}" because there is no Conversion Graph for that scenario.'.format(instance_name, render_context)
+                return result
+
     except Exception as error:
         print('Warning: Universal Material Map: function "convert_instance_to_data": Unexpected error:')
         print('\targument "instance_name" = "{0}"'.format(instance_name))
         print('\targument "render_context" = "{0}"'.format(render_context))
         print('\terror: {0}'.format(error))
         print('\tcallstack: {0}'.format(traceback.format_exc()))
-    return []
+        result = dict()
+        result['umm_notification'] = 'unexpected_error'
+        result['message'] = 'Not able to convert material "{0}" for render context "{1}" there was an unexpected error. Details: {2}'.format(instance_name, render_context, error)
+        return result
+    result = dict()
+    result['umm_notification'] = 'incomplete_process'
+    result['message'] = 'Not able to convert material "{0}" for render context "{1}" because there is no Conversion Graph for that scenario.'.format(instance_name, render_context)
+    return result

@@ -145,6 +145,7 @@ Note that this API does not require any data or object instance argument. It's a
 
 import sys
 import typing
+import traceback
 
 from .. import data
 from .core import ICoreConverter, IDataConverter, IObjectConverter
@@ -282,11 +283,18 @@ def convert_instance_to_instance(instance: object, render_context: str) -> typin
 
 def can_convert_instance_to_data(instance: object, render_context: str) -> bool:
     """ Resolves if a converter can convert the instance to another object given the render_context. """
-    converters = getattr(sys.modules[__name__], '__converters')
-    for converter in converters:
-        if isinstance(converter, IObjectConverter):
-            if converter.can_convert_instance_to_data(instance=instance, render_context=render_context):
-                return True
+    try:
+        converters = getattr(sys.modules[__name__], '__converters')
+        for converter in converters:
+            if isinstance(converter, IObjectConverter):
+                if converter.can_convert_instance_to_data(instance=instance, render_context=render_context):
+                    return True
+    except Exception as error:
+        print('Warning: Universal Material Map: function "can_convert_instance_to_data": Unexpected error:')
+        print('\targument "instance" = "{0}"'.format(instance))
+        print('\targument "render_context" = "{0}"'.format(render_context))
+        print('\terror: {0}'.format(error))
+        print('\tcallstack: {0}'.format(traceback.format_exc()))
     return False
 
 
@@ -295,17 +303,28 @@ def convert_instance_to_data(instance: object, render_context: str) -> typing.Li
     Returns a list of key value pairs in tuples.
     The first pair is ("umm_target_class", "the_class_name") indicating the conversion target class.
     """
-    converters = getattr(sys.modules[__name__], '__converters')
-    for converter in converters:
-        if isinstance(converter, IObjectConverter):
-            if converter.can_convert_instance_to_data(instance=instance, render_context=render_context):
-                result = converter.convert_instance_to_data(instance=instance, render_context=render_context)
-                print('Universal Material Map: convert_instance_to_data({0}, "{1}") generated data:'.format(instance, render_context))
-                print('\t(')
-                for o in result:
-                    print('\t\t{0}'.format(o))
-                print('\t)')
-                return result
+    try:
+        converters = getattr(sys.modules[__name__], '__converters')
+        for converter in converters:
+            if isinstance(converter, IObjectConverter):
+                if converter.can_convert_instance_to_data(instance=instance, render_context=render_context):
+                    result = converter.convert_instance_to_data(instance=instance, render_context=render_context)
+                    print('Universal Material Map: convert_instance_to_data({0}, "{1}") generated data:'.format(instance, render_context))
+                    print('\t(')
+                    for o in result:
+                        print('\t\t{0}'.format(o))
+                    print('\t)')
+                    return result
+    except Exception as error:
+        print('Warning: Universal Material Map: function "convert_instance_to_data": Unexpected error:')
+        print('\targument "instance" = "{0}"'.format(instance))
+        print('\targument "render_context" = "{0}"'.format(render_context))
+        print('\terror: {0}'.format(error))
+        print('\tcallstack: {0}'.format(traceback.format_exc()))
+        result = dict()
+        result['umm_notification'] = 'unexpected_error'
+        result['message'] = 'Not able to convert "{0}" for render context "{1}" because there was an unexpected error. Details: {2}'.format(instance, render_context, error)
+        return result
     raise Exception('Registered converters does not support action.')
 
 
@@ -368,18 +387,31 @@ def can_apply_data_to_instance(source_class_name: str, render_context: str, sour
     return False
 
 
-def apply_data_to_instance(source_class_name: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]], instance: object) -> None:
+def apply_data_to_instance(source_class_name: str, render_context: str, source_data: typing.List[typing.Tuple[str, typing.Any]], instance: object) -> dict:
     """
     Returns a list of created objects.
     """
-    converters = getattr(sys.modules[__name__], '__converters')
-    for converter in converters:
-        if isinstance(converter, IObjectConverter):
-            if converter.can_apply_data_to_instance(source_class_name=source_class_name, render_context=render_context, source_data=source_data, instance=instance):
-                converter.apply_data_to_instance(source_class_name=source_class_name, render_context=render_context, source_data=source_data, instance=instance)
-                print('Universal Material Map: apply_data_to_instance("{0}", "{1}") completed.'.format(instance, render_context))
-                return
-    raise Exception('Registered converters does not support action.')
+    try:
+        converters = getattr(sys.modules[__name__], '__converters')
+        for converter in converters:
+            if isinstance(converter, IObjectConverter):
+                if converter.can_apply_data_to_instance(source_class_name=source_class_name, render_context=render_context, source_data=source_data, instance=instance):
+                    converter.apply_data_to_instance(source_class_name=source_class_name, render_context=render_context, source_data=source_data, instance=instance)
+                    print('Universal Material Map: apply_data_to_instance("{0}", "{1}") completed.'.format(instance, render_context))
+                    result = dict()
+                    result['umm_notification'] = 'success'
+                    result['message'] = 'Material conversion data applied to "{0}".'.format(instance)
+                    return result
+        result = dict()
+        result['umm_notification'] = 'incomplete_process'
+        result['message'] = 'Not able to convert type "{0}" for render context "{1}" because there is no Conversion Graph for that scenario. No changes were applied to "{2}".'.format(source_class_name, render_context, instance)
+        return result
+    except Exception as error:
+        print('UMM: Unexpected error: {0}'.format(traceback.format_exc()))
+        result = dict()
+        result['umm_notification'] = 'unexpected_error'
+        result['message'] = 'Not able to convert type "{0}" for render context "{1}" because there was an unexpected error. Some changes may have been applied to "{2}". Details: {3}'.format(source_class_name, render_context, instance, error)
+        return result
 
 
 def get_conversion_manifest() -> typing.List[typing.Tuple[str, str]]:
@@ -393,3 +425,4 @@ def get_conversion_manifest() -> typing.List[typing.Tuple[str, str]]:
     for converter in converters:
         manifest.extend(converter.get_conversion_manifest())
     return manifest
+
