@@ -45,7 +45,7 @@ bl_info = {
     'name': 'Universal Material Map',
     'author': 'NVIDIA Corporation',
     'description': 'A Blender AddOn based on the Universal Material Map framework.',
-    'blender': (3, 0, 0),
+    'blender': (3, 1, 0),
     'location': 'View3D',
     'warning': '',
     'category': 'Omniverse'

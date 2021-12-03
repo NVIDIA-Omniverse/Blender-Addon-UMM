@@ -131,6 +131,9 @@ def __get_value_impl(socket: bpy.types.NodeSocketStandard, depth=0, max_depth=10
             if debug:
                 print('\t\tlink.from_node: {0}'.format(type(instance)))
             if isinstance(instance, bpy.types.ShaderNodeTexImage):
+                print(f'UMM: image.filepath: "{instance.image.filepath}"')
+                print(f'UMM: image.source: "{instance.image.source}"')
+                print(f'UMM: image.file_format: "{instance.image.file_format}"')
                 if debug:
                     print('\t\tinstance.image: {0}'.format(instance.image))
                     if instance.image:
@@ -151,9 +154,13 @@ def __get_value_impl(socket: bpy.types.NodeSocketStandard, depth=0, max_depth=10
                         print('\t\tinstance.image.filepath: {0}'.format(value))
                     try:
                         if value is None or value == '':
-                            value = f'{instance.image.name}.{instance.image.file_format}'
+                            file_format = instance.image.file_format
+                            if file_format.lower() == 'open_exr':
+                                file_format = 'exr'
+                            value = f'{instance.image.name}.{file_format}'
                             if debug:
                                 print(f'\t\tvalue: {value}')
+                            print(f'UMM: image data: "{[value, instance.image.colorspace_settings.name]}"')
                             return [value, instance.image.colorspace_settings.name]
                         return [os.path.abspath(bpy.path.abspath(value)), instance.image.colorspace_settings.name]
                     except Exception as error:

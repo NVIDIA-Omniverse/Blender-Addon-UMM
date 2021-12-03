@@ -391,6 +391,9 @@ class ObjectConverter(CoreConverter, IObjectConverter):
                     if isinstance(shader_node, bpy.types.ShaderNodeTexImage):
                         if map_definition['blender_socket'] == 'image':
                             if shader_node.image and (shader_node.image.source == 'FILE' or shader_node.image.source == 'TILED'):
+                                print(f'UMM: image.filepath: "{shader_node.image.filepath}"')
+                                print(f'UMM: image.source: "{shader_node.image.source}"')
+                                print(f'UMM: image.file_format: "{shader_node.image.file_format}"')
                                 value = shader_node.image.filepath
                                 if (shader_node.image.source == 'TILED'):
                                     # Find all numbers in the path.
@@ -414,6 +417,7 @@ class ObjectConverter(CoreConverter, IObjectConverter):
                                 except Exception as error:
                                     print('Warning: Universal Material Map: Unable to evaluate absolute file path of texture "{0}". Detail: {1}'.format(shader_node.image.filepath, error))
                                     output.value = ['', 'raw']
+                                print(f'UMM: output.value: "{output.value}"')
                             else:
                                 if developer_mode:
                                     print('setting default value for output.value')
