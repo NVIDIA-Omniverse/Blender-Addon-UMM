@@ -404,7 +404,10 @@ class ObjectConverter(CoreConverter, IObjectConverter):
                                             value = split_items[0] + '<UDIM>' + split_items[1]
                                 try:
                                     if value is None or value == '':
-                                        value = f'{shader_node.image.name}.{shader_node.image.file_format}'
+                                        file_format = shader_node.image.file_format
+                                        if file_format.lower() == 'open_exr':
+                                            file_format = 'exr'
+                                        value = f'{shader_node.image.name}.{file_format}'
                                         output.value = [value, shader_node.image.colorspace_settings.name]
                                     else:
                                         output.value = [os.path.abspath(bpy.path.abspath(value)), shader_node.image.colorspace_settings.name]
