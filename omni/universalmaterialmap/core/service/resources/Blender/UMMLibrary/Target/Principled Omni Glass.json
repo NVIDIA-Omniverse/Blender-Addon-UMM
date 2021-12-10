@@ -625,6 +625,32 @@
                             1.0
                         ],
                         "_enum_values": []
+                    },
+                    {
+                        "_id": "94f11e0f-4db2-4b15-9c4c-912393e81a03",
+                        "_name": "Normal Map Flip U Tangent",
+                        "_display_name": "Normal Map Flip U Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": 0,
+                        "_value": 0,
+                        "_enum_values": []
+                    },
+                    {
+                        "_id": "181a2206-aa30-4b46-96c5-235a3f03f968",
+                        "_name": "Normal Map Flip V Tangent",
+                        "_display_name": "Normal Map Flip V Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": 1,
+                        "_value": 1,
+                        "_enum_values": []
                     }
                 ],
                 "_outputs": [
@@ -878,6 +904,32 @@
                             1.0
                         ],
                         "_enum_values": []
+                    },
+                    {
+                        "_id": "625f222b-36b0-467a-8c59-6b38a813dc02",
+                        "_name": "Normal Map Flip U Tangent",
+                        "_display_name": "Normal Map Flip U Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": true,
+                        "_is_removable": false,
+                        "_default_value": 0,
+                        "_value": 0,
+                        "_enum_values": []
+                    },
+                    {
+                        "_id": "ccd76123-0caa-4d2c-8ce3-4d144723305a",
+                        "_name": "Normal Map Flip V Tangent",
+                        "_display_name": "Normal Map Flip V Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": true,
+                        "_is_removable": false,
+                        "_default_value": 1,
+                        "_value": 1,
+                        "_enum_values": []
                     }
                 ],
                 "_class_name": "ShaderNodeGroup"
@@ -905,7 +957,7 @@
             ]
         },
         "_root_node_id": "0f41da46-a4ce-4c55-8773-f8d5d3f2206b",
-        "_revision": 3,
+        "_revision": 4,
         "_connections": []
     }
 }

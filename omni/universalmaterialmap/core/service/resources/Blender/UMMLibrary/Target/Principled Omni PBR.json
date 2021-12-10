@@ -955,6 +955,32 @@
                         "_default_value": 0,
                         "_value": 0,
                         "_enum_values": []
+                    },
+                    {
+                        "_id": "6aca8cf7-481e-4d77-8116-113792354b56",
+                        "_name": "Normal Map Flip U Tangent",
+                        "_display_name": "Normal Map Flip U Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": 0,
+                        "_value": 0,
+                        "_enum_values": []
+                    },
+                    {
+                        "_id": "8ee4ea8c-60e4-4e81-a706-64ec5ba3c606",
+                        "_name": "Normal Map Flip V Tangent",
+                        "_display_name": "Normal Map Flip V Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": false,
+                        "_is_removable": false,
+                        "_default_value": 1,
+                        "_value": 1,
+                        "_enum_values": []
                     }
                 ],
                 "_outputs": [
@@ -1312,6 +1338,32 @@
                         "_default_value": 0,
                         "_value": 0,
                         "_enum_values": []
+                    },
+                    {
+                        "_id": "0e0661c4-dc86-4c8e-8970-f3be3eab6f52",
+                        "_name": "Normal Map Flip U Tangent",
+                        "_display_name": "Normal Map Flip U Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": true,
+                        "_is_removable": false,
+                        "_default_value": 0,
+                        "_value": 0,
+                        "_enum_values": []
+                    },
+                    {
+                        "_id": "30c3b04a-af6e-470f-a209-8cb02d625fef",
+                        "_name": "Normal Map Flip V Tangent",
+                        "_display_name": "Normal Map Flip V Tangent",
+                        "_value_type": "int",
+                        "_internal_value_type": "INT",
+                        "_is_peripheral": false,
+                        "_is_editable": true,
+                        "_is_removable": false,
+                        "_default_value": 1,
+                        "_value": 1,
+                        "_enum_values": []
                     }
                 ],
                 "_class_name": "ShaderNodeGroup"
@@ -1435,6 +1487,42 @@
                     }
                 ],
                 "_class_name": "ShaderNodeTexImage"
+            },
+            {
+                "_id": "Frame.002",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
+            },
+            {
+                "_id": "Frame.001",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
+            },
+            {
+                "_id": "Frame",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
+            },
+            {
+                "_id": "Frame.004",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
+            },
+            {
+                "_id": "Frame.003",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
+            },
+            {
+                "_id": "Frame.005",
+                "_inputs": [],
+                "_outputs": [],
+                "_class_name": "NodeFrame"
             }
         ],
         "_metadata": {
@@ -1453,7 +1541,7 @@
             ]
         },
         "_root_node_id": "c7bd6124-2e74-493e-9448-d5e046e42cd6",
-        "_revision": 17,
+        "_revision": 18,
         "_connections": []
     }
 }

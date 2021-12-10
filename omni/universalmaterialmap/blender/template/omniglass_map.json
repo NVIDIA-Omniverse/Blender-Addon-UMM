@@ -155,6 +155,18 @@
             "blender_socket": "image",
             "mdl_name": "",
             "umm_display_name": "Roughness Texture"
+        },
+        {
+            "blender_node": "OmniGlass Compute",
+            "blender_socket": "Normal Map Flip U Tangent",
+            "mdl_name": "flip_tangent_u",
+            "umm_display_name": "Normal Map Flip U Tangent"
+        },
+        {
+            "blender_node": "OmniGlass Compute",
+            "blender_socket": "Normal Map Flip V Tangent",
+            "mdl_name": "flip_tangent_v",
+            "umm_display_name": "Normal Map Flip V Tangent"
         }
     ]
 }

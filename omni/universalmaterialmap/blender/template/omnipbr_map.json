@@ -257,6 +257,18 @@
             "blender_socket": "UV Space Index",
             "mdl_name": "uv_space_index",
             "umm_display_name": "UV Space Index"
+        },
+        {
+            "blender_node": "OmniPBR Compute",
+            "blender_socket": "Normal Map Flip U Tangent",
+            "mdl_name": "flip_tangent_u",
+            "umm_display_name": "Normal Map Flip U Tangent"
+        },
+        {
+            "blender_node": "OmniPBR Compute",
+            "blender_socket": "Normal Map Flip V Tangent",
+            "mdl_name": "flip_tangent_v",
+            "umm_display_name": "Normal Map Flip V Tangent"
         }
     ]
 }
