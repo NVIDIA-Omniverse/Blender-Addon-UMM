@@ -440,6 +440,10 @@ class ObjectConverter(CoreConverter, IObjectConverter):
                         break
 
                     if isinstance(shader_node, bpy.types.ShaderNodeGroup):
+                        if map_definition['blender_socket'] not in shader_node.inputs.keys():
+                            if developer_mode:
+                                print(f'{map_definition["blender_socket"]} not in shader_node.inputs.keys()')
+                            break
                         socket: bpy.types.NodeSocketStandard = shader_node.inputs[map_definition['blender_socket']]
                         output.value = socket.default_value
                         if developer_mode:
