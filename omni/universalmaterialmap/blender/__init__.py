@@ -153,6 +153,23 @@ def __get_value_impl(socket: bpy.types.NodeSocketStandard, depth=0, max_depth=10
                     if debug:
                         print('\t\tinstance.image.filepath: {0}'.format(value))
                     try:
+                        if value and instance.image.packed_file:
+                            # The image is packed, so ignore the filepath, which is likely
+                            # invalid, and return just the base name.
+                            value = bpy.path.basename(value)
+                            # Make sure the file has a valid extension for
+                            # the expected format.
+                            #
+                            # TODO: the following code for converting the
+                            # 'open_exr' format to a valid extension is
+                            # repeated below.  Maybe this belongs in a
+                            # utility function.
+                            file_format = instance.image.file_format.lower()
+                            if file_format == 'open_exr':
+                                file_format = 'exr'
+                            value = bpy.path.ensure_ext(value, '.' + file_format)
+                            print(f'UMM: packed image data: "{[value, instance.image.colorspace_settings.name]}"')
+                            return [value, instance.image.colorspace_settings.name]
                         if value is None or value == '':
                             file_format = instance.image.file_format
                             if file_format.lower() == 'open_exr':
