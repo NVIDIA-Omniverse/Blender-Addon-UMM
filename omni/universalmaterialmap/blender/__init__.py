@@ -106,6 +106,19 @@ def get_library():
 
 
 def __get_value_impl(socket: bpy.types.NodeSocketStandard, depth=0, max_depth=100) -> typing.Any:
+
+    # Local utility function which returns a file extension
+    # corresponding to the given image file format string.
+    # This mimics similar logic used in the Blender USD IO
+    # C++ implementation.
+    def get_extension_from_image_file_format(format):
+        format = format.lower()
+        if format == 'open_exr':
+            format = 'exr'
+        elif format == 'jpeg':
+            format = 'jpg'
+        return format
+
     debug = False
     if debug:
         print('__get_value_impl: depth={0}'.format(depth))
@@ -159,21 +172,14 @@ def __get_value_impl(socket: bpy.types.NodeSocketStandard, depth=0, max_depth=10
                             value = bpy.path.basename(value)
                             # Make sure the file has a valid extension for
                             # the expected format.
-                            #
-                            # TODO: the following code for converting the
-                            # 'open_exr' format to a valid extension is
-                            # repeated below.  Maybe this belongs in a
-                            # utility function.
-                            file_format = instance.image.file_format.lower()
-                            if file_format == 'open_exr':
-                                file_format = 'exr'
+                            file_format = instance.image.file_format
+                            file_format = get_extension_from_image_file_format(file_format)
                             value = bpy.path.ensure_ext(value, '.' + file_format)
                             print(f'UMM: packed image data: "{[value, instance.image.colorspace_settings.name]}"')
                             return [value, instance.image.colorspace_settings.name]
                         if value is None or value == '':
                             file_format = instance.image.file_format
-                            if file_format.lower() == 'open_exr':
-                                file_format = 'exr'
+                            file_format = get_extension_from_image_file_format(file_format)
                             value = f'{instance.image.name}.{file_format}'
                             if debug:
                                 print(f'\t\tvalue: {value}')
